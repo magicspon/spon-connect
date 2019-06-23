@@ -1,254 +1,72 @@
-## Available Plugins
+## Rematch integration
 
-### Device (window resize)
+You’ll need to know how to use rematch to use this feature. Spon.js exposes a hook for subscribing to store updates. It uses the connect function to bind the store state and reducers to the module
+
+/store/index.js
 
 ```javascript
-import { withPlugins } from '@spon/core'
-import { device } from '@spon/plugins'
+import { init } from '@rematch/core'
+import createRematchPersist from '@rematch/persist'
+import { default as connectStore } from '@core/connect'
+import * as models from './models/index'
 
-/**
- * @function example
- * @param {Object} props
- * @property {HTMLElement} props.node
- * @property {Object} props.plugins
- * @property {Object} props.plugins.device
- * @return {Function} a function to unmount
- */
-function example({ node, plugins: { device } }) {
-	device.width // the current viewport width
-	device.height // the current viewport height
+const persistPlugin = createRematchPersist({
+	whitelist: ['cart'],
+	throttle: 1000,
+	version: 1
+})
 
-	device.resize(() => {
-		// called when the window resizes
-	})
+const store = init({
+	models: {
+		...models
+	},
+	plugins: [persistPlugin]
+})
 
-	device.at('(min-width="1024px")', {
-		on: () => {
-			// called when the media query matches the current viewport
-		},
+// this creates a function that is used to bind modules to the store
+export const connect = connectStore(store)
 
-		off: () => {
-			// called when the media query does not match the current viewport
-		}
-	})
-
-	device.cancel() // stop listening to resize events
-}
-
-export default withPlugins(device)(example)
+export default store
 ```
 
-### Inview (IntersectionObserver)
+/behaviours/example
 
 ```javascript
 import { withPlugins } from '@spon/core'
-import { inview } from '@spon/plugins'
-
-/**
- * @function example
- * @param {Object} props
- * @property {HTMLElement} props.node
- * @property {Object} props.plugins
- * @property {Object} props.plugins.inview
- * @return {Function} a function to unmount
- */
-function example({ node, plugins: { inview } }) {
-	// watch the node
-	inview.observe({
-		enter: (entry, observer) => {
-			// called when the node enters the viewport
-		},
-		exit: (entry, observer) => {
-			// called when the node exits the viewport
-		}
-	})
-
-	// watch some other nodes
-	inview.observe(document.querySelectorAll('[data-inview]'), {
-		enter: (entry, observer) => {
-			// called when the node enters the viewport
-		},
-		exit: (entry, observer) => {
-			// called when the node exits the viewport
-		}
-	})
-
-	inview.disconnect() // remove any intersection observers
-}
-
-export default withPlugins(inview)(example)
-```
-
-### Mutation (MutationObserver)
-
-```javascript
-import { withPlugins } from '@spon/core'
-import { mutation } from '@spon/plugins'
-
-/**
- * @function example
- * @param {Object} props
- * @property {HTMLElement} props.node
- * @property {Object} props.plugins
- * @property {Function} props.plugins.mutation
- * @return {Function} a function to unmount
- */
-function example({ node, plugins: { mutation } }) {
-	// watch the node
-	const { observe, disconnect } = mutation(node, {
-		attributes: true,
-		childList: false,
-		subtree: false
-	})
-
-	observe(() => {
-		// called when a mutation happens on the node
-	})
-
-	disconnect() // remove any mutation observers
-}
-
-export default withPlugins(mutation)(example)
-```
-
-### Resize (resize observer)
-
-```javascript
-import { withPlugins } from '@spon/core'
-import { resize } from '@spon/plugins'
-
-/**
- * @function example
- * @param {Object} props
- * @property {HTMLElement} props.node
- * @property {Object} props.plugins
- * @property {Function} props.plugins.resize
- * @return {Function} a function to unmount
- */
-function example({ node, plugins: { resize } }) {
-	// watch the node
-	const { observe, disconnect } = resize(node)
-
-	observe(() => {
-		// called when a the element changes size
-	})
-
-	disconnect() // remove any  resize observers
-}
-
-export default withPlugins(resize)(example)
-```
-
-### Scroll (window scroll)
-
-```javascript
-import { withPlugins } from '@spon/core'
-import { scroll } from '@spon/plugins'
-/**
- * @function example
- * @param {Object} props
- * @property {HTMLElement} props.node
- * @property {Object} props.plugins
- * @property {Object} props.plugins.scroll
- * @return {Function} a function to unmount
- */
-function example({ node, plugins: { scroll } }) {
-	// watch the node
-	scroll.progress(() => {
-		// called as the user scrolls
-	})
-
-	scroll.start(() => {
-		// called when the user starts scrolling
-	})
-
-	scroll.stop(() => {
-		// called when the user stops scrolling
-	})
-
-	scroll.destroy() // remove the scroll event
-}
-
-export default withPlugins(resize)(example)
-```
-
-### Dom Events (event delegation)
-
-```javascript
-import { withPlugins } from '@spon/core'
+import { connect } from './store'
 import { domEvents } from '@spon/plugins'
 
-/**
- * @function example
- * @param {Object} props
- * @property {HTMLElement} props.node
- * @property {Object} props.plugins
- * @property {Function} props.plugins.addEvents
- * @return {Function} a function to unmount
- */
-function example({ node, plugins: { addEvents, removeEvents, removeEvent } }) {
-	// watch the node
+// removed other code for brevity
+function example({ node, addEvents, refs, store, render }) {
+	// this function will be called every time
+	// the objects returned from the mapState
+	// function change
 
-	// add events, delegated to the node
-	addEvents({
-		'click [data-toggle-button]': (e, elm) => {
-			e.preventDefault()
-			elm.classList.toggle('is-active')
-		},
-		'mouseenter [data-toggle-button]': [
-			(e, elm) => {
-				e.preventDefault()
-				elm.classList.toggle('is-active')
-			},
-			true // capture value
-		]
+	store.deleteItemFromCart(node.id)
+
+	render(({ prevState, currentState }) => {
+		// code written here should only
+		// react to changes
+		// you shouldn't be quering the dom
+		// or making ajax requests
+		// this is reactive code only!
 	})
-
-	// delegate events to the body
-	addEvents(document.body, {
-		'click [data-toggle-button]': (e, elm) => {
-			e.preventDefault()
-			elm.classList.toggle('is-active')
-		}
-	})
-
-	removeEvents() // remove all events
-
-	removeEvent('click [data-toggle-button]') // remove event by 'event selector'
 }
 
-export default withPlugins(domEvents)(example)
-```
-
-### All together
-
-```javascript
-import { withPlugins } from '@spon/core'
-import {
-	domEvents,
-	scroll,
-	inview,
-	mutation,
-	device,
-	resize
-} from '@spon/plugins'
-
-/**
- * @function example
- * @param {Object} props
- * @property {HTMLElement} props.node
- * @property {Object} props.plugins
- * @property {Function} props.plugins.addEvents
- * @return {Function} a function to unmount
- */
-function example({
-	node,
-	plugins: { addEvents, inview, mutation, device, resize, scroll }
-}) {
-	// do stuff
+// get the cart state
+const mapState = store => {
+	return {
+		cart: store.cart
+	}
 }
+// get all of the cart actions
+// note: I could have written the function above like this
+const mapDispatch = ({ cart }) => ({ ...cart })
 
-export default withPlugins(domEvents, inview, mutation, device, resize, scroll)(
-	example
+export default withPlugins(domEvents)(
+	connect({
+		mapState,
+		mapDispatch
+	})(basket)
 )
 ```

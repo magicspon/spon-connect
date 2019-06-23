@@ -72,7 +72,7 @@ function bindStoreToRender(state, store) {
  * @description returns connect function that hooks up any plugins with a bound behaviour
  * @return {function}
  */
-export default function(globalStore) {
+export default function connect(globalStore) {
 	/**
 	 * @function connect
 	 * @memberOf connect
