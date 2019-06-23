@@ -1,6 +1,6 @@
 // @ts-check
 import { diff } from 'deep-object-diff'
-import { registerPlugins } from '@spon/core'
+import { registerPlugin } from '@spon/core'
 
 function renderInTheLoop(callback) {
 	requestAnimationFrame(() => {
@@ -117,7 +117,7 @@ export default function connect(globalStore) {
 					render: fn => {
 						// add the current modules subscription function
 						// to the function cache used by the core app loader
-						registerPlugins(name)(globalStore.subscribe(render(fn)))
+						registerPlugin(name)(globalStore.subscribe(render(fn)))
 					},
 					store: { ...storeItem }
 				})
