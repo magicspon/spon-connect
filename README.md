@@ -7,7 +7,7 @@ You’ll need to know how to use rematch to use this feature. Spon.js exposes a 
 ```javascript
 import { init } from '@rematch/core'
 import createRematchPersist from '@rematch/persist'
-import { default as connectStore } from '@core/connect'
+import { default as connectStore } from '@spon/connect'
 import * as models from './models/index'
 
 const persistPlugin = createRematchPersist({
@@ -32,12 +32,11 @@ export default store
 /behaviours/example
 
 ```javascript
-import { withPlugins } from '@spon/core'
 import { connect } from './store'
-import { domEvents } from '@spon/plugins'
+import { domEvents, withPlugins } from '@spon/plugins'
 
 // removed other code for brevity
-function example({ node, addEvents, refs, store, render }) {
+function example({ node, addEvents, store, render }) {
 	// this function will be called every time
 	// the objects returned from the mapState
 	// function change
