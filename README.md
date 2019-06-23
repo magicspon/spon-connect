@@ -1,5 +1,9 @@
 ## Rematch/@spon/core integration
 
+## Installation
+
+`npm install @spon/core @spon/connect --save` or `yarn add @spon/core @spon/connect --save`
+
 Peer Dependency
 
 - @spon/core ^2.0.2
