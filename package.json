@@ -1,0 +1,105 @@
+{
+  "name": "@spon/connect",
+  "version": "0.0.1",
+  "description": "spon",
+  "keywords": [],
+  "homepage": "https://github.com/magicspon/spon-connect#readme",
+  "bugs": {
+    "url": "https://github.com/magicspon/spon-connect/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/magicspon/spon-connect.git"
+  },
+  "license": "MIT",
+  "author": "magicspon@gmail.com",
+  "files": [
+    "build"
+  ],
+  "main": "build/index.cjs.js",
+  "module": "build/index.esm.js",
+  "browser": "build/index.js",
+  "style": "build/index.css",
+  "scripts": {
+    "build": "rollup -c",
+    "codecov": "codecov",
+    "lint": "eslint --ext .js,.jsx .",
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "jest": {
+    "testURL": "http://localhost:3000/",
+    "setupFiles": [
+      "<rootDir>/setup-jest.js"
+    ],
+    "collectCoverageFrom": [
+      "src/js/core/**/*.{js,jsx,ts,tsx}",
+      "!**/node_modules/**",
+      "!cypress/**"
+    ],
+    "testMatch": [
+      "**/?(*.)(spec|test).js?(x)"
+    ],
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/cypress"
+    ]
+  },
+  "quokka": {
+    "babel": {
+      "env": "test"
+    },
+    "installPackageCommand": "yarn add {packageName}",
+    "plugins": [
+      "jsdom-quokka-plugin"
+    ]
+  },
+  "peerDependencies": {
+    "@spon/core": "^2.0.0"
+  },
+  "dependencies": {
+    "deep-object-diff": "^1.1.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.0.0-beta.54",
+    "@babel/core": "^7.0.0-beta.54",
+    "@babel/plugin-proposal-class-properties": "^7.3.0",
+    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
+    "@babel/plugin-transform-async-to-generator": "^7.2.0",
+    "@babel/plugin-transform-modules-commonjs": "^7.2.0",
+    "@babel/plugin-transform-runtime": "^7.2.0",
+    "@babel/preset-env": "^7.0.0-beta.54",
+    "@babel/runtime": "^7.3.1",
+    "@rematch/core": "^1.0.6",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-eslint": "^10.0.1",
+    "babel-jest": "22.4.3",
+    "babel-plugin-dynamic-import-node": "^2.2.0",
+    "codecov": "^3.0.2",
+    "dom-testing-library": "^3.16.5",
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-config-prettier": "^4.0.0",
+    "eslint-plugin-import": "^2.9.0",
+    "eslint-plugin-jest": "^22.3.0",
+    "eslint-plugin-jsx-a11y": "^6.2.1",
+    "eslint-plugin-react": "^7.12.4",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^24.1.0",
+    "jest-dom": "^3.1.0",
+    "rollup": "^0.58.1",
+    "rollup-plugin-babel": "^4.0.0-beta.4",
+    "rollup-plugin-babel-minify": "^4.0.0",
+    "rollup-plugin-commonjs": "^9.1.0",
+    "rollup-plugin-filesize": "^1.5.0",
+    "rollup-plugin-local-resolve": "^1.0.7",
+    "rollup-plugin-node-resolve": "^3.3.0",
+    "rollup-plugin-peer-deps-external": "^2.1.0",
+    "rollup-plugin-postcss": "^1.5.1",
+    "rollup-plugin-terser": "^1.0.1",
+    "source-map-loader": "^0.2.3"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
