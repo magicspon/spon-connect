@@ -1,4 +1,10 @@
-## Rematch integration
+## Rematch/@spon/core integration
+
+Peer Dependency
+
+- @spon/core ^2.0.2
+
+See [@spon/core](https://github.com/magicspon/spon-core/blob/master/README.md) for documentation
 
 You’ll need to know how to use rematch to use this feature. Spon.js exposes a hook for subscribing to store updates. It uses the connect function to bind the store state and reducers to the module
 
@@ -6,21 +12,19 @@ You’ll need to know how to use rematch to use this feature. Spon.js exposes a 
 
 ```javascript
 import { init } from '@rematch/core'
-import createRematchPersist from '@rematch/persist'
-import { default as connectStore } from '@spon/connect'
-import * as models from './models/index'
-
-const persistPlugin = createRematchPersist({
-	whitelist: ['cart'],
-	throttle: 1000,
-	version: 1
-})
+import connectStore from '@spon/connect'
 
 const store = init({
 	models: {
-		...models
-	},
-	plugins: [persistPlugin]
+		count: {
+			state: 0, // initial state
+			reducers: {
+				increment(state, payload) {
+					return state + payload
+				}
+			}
+		}
+	}
 })
 
 // this creates a function that is used to bind modules to the store
@@ -32,40 +36,34 @@ export default store
 /behaviours/example
 
 ```javascript
-import { connect } from './store'
+import { connect } from '@/store'
 import { domEvents, withPlugins } from '@spon/plugins'
 
-// removed other code for brevity
-function example({ node, addEvents, store, render }) {
-	// this function will be called every time
-	// the objects returned from the mapState
-	// function change
+function counter({ plugins: { addEvents }, store, render }) {
+	const node = document.getElementById('value')
 
-	store.deleteItemFromCart(node.id)
-
-	render(({ prevState, currentState }) => {
-		// code written here should only
-		// react to changes
-		// you shouldn't be quering the dom
-		// or making ajax requests
-		// this is reactive code only!
+	addEvents({
+		'click button': () => {
+			store.increment(1)
+		}
 	})
+
+	render(
+		({ current }) => {
+			node.textContent = current.count
+		},
+		['count'] // dependencies
+	)
 }
 
-// get the cart state
 const mapState = store => {
 	return {
-		cart: store.cart
+		count: store.count
 	}
 }
-// get all of the cart actions
-// note: I could have written the function above like this
-const mapDispatch = ({ cart }) => ({ ...cart })
+const mapDispatch = ({ count }) => ({ ...count })
 
 export default withPlugins(domEvents)(
-	connect({
-		mapState,
-		mapDispatch
-	})(basket)
+	connect({ mapState, mapDispatch })(counter)
 )
 ```
