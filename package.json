@@ -55,7 +55,7 @@
 		]
 	},
 	"peerDependencies": {
-		"@spon/core": "^2.0.0"
+		"@spon/core": "^2.0.1"
 	},
 	"dependencies": {
 		"deep-object-diff": "^1.1.0"
