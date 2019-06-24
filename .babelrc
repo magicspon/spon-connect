@@ -27,8 +27,7 @@
 					}
 				]
 			],
-			"ignore": ["node_modules/**", "*.test.js"],
-			"plugins": ["@babel/plugin-syntax-dynamic-import"]
+			"ignore": ["node_modules/**", "*.test.js"]
 		}
 	}
 }

@@ -1,6 +1,6 @@
 {
 	"name": "@spon/connect",
-	"version": "0.0.3",
+	"version": "0.1.0",
 	"description": "spon",
 	"keywords": [],
 	"homepage": "https://github.com/magicspon/spon-connect#readme",
@@ -55,7 +55,7 @@
 		]
 	},
 	"peerDependencies": {
-		"@spon/core": "^2.0.1"
+		"@spon/core": "^2.1.0"
 	},
 	"dependencies": {
 		"deep-object-diff": "^1.1.0"
