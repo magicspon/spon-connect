@@ -1,4 +1,3 @@
-// https://github.com/storybookjs/storybook/tree/master/addons/storyshots/storyshots-core
 // import '@babel/polyfill'
 import '@testing-library/jest-dom/extend-expect'
 

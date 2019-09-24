@@ -1,12 +1,12 @@
 // @ts-check
 import { diff } from 'deep-object-diff'
-import { registerPlugin } from '@spon/core'
+import { registerPlugin, renderInTheLoop } from '@spon/core'
 
-function renderInTheLoop(callback) {
-	requestAnimationFrame(() => {
-		requestAnimationFrame(() => callback())
-	})
-}
+// function renderInTheLoop(callback) {
+// 	requestAnimationFrame(() => {
+// 		requestAnimationFrame(() => callback())
+// 	})
+// }
 /**
  * @function mapStateToRenderHelper
  * @param {object} state the current state object
@@ -16,8 +16,8 @@ function renderInTheLoop(callback) {
 function mapStateToRenderHelper(state, watch) {
 	return watch.length > 0
 		? watch.reduce((acc, key) => {
-			acc[key] = state[key]
-			return acc
+				acc[key] = state[key]
+				return acc
 		  }, {})
 		: state
 }
