@@ -1,6 +1,6 @@
 {
 	"name": "@spon/connect",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"description": "spon",
 	"keywords": [],
 	"homepage": "https://github.com/magicspon/spon-connect#readme",
@@ -95,7 +95,7 @@
 		"rollup-plugin-filesize": "^6.2.0",
 		"rollup-plugin-local-resolve": "^1.0.7",
 		"rollup-plugin-node-resolve": "^5.2.0",
-		"rollup-plugin-peer-deps-external": "^2.1.0",
+		"rollup-plugin-peer-deps-external": "^2.2.0",
 		"rollup-plugin-postcss": "^2.0.3",
 		"rollup-plugin-terser": "^5.1.2",
 		"source-map-loader": "^0.2.3"
