@@ -2,11 +2,6 @@
 import { diff } from 'deep-object-diff'
 import { registerPlugin, renderInTheLoop } from '@spon/core'
 
-// function renderInTheLoop(callback) {
-// 	requestAnimationFrame(() => {
-// 		requestAnimationFrame(() => callback())
-// 	})
-// }
 /**
  * @function mapStateToRenderHelper
  * @param {object} state the current state object
