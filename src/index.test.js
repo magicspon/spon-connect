@@ -1,11 +1,10 @@
 import { init } from '@rematch/core'
-import connectStore from '../src/'
-
-let store
+import connectStore from '.'
 
 describe('connect', () => {
 	document.body.innerHTML =
 		'<div style="transition: all 300ms ease" id="test" class="base-class" data-test="20" data-other="40"></div>'
+	let store
 
 	beforeEach(() => {
 		store = init({
@@ -26,7 +25,7 @@ describe('connect', () => {
 		expect(connectStore).toBeInstanceOf(Function)
 	})
 
-	it('should return a function when called with store and registerFunk', () => {
+	it('should return a function when connectStore is called with the store', () => {
 		const connect = connectStore(store)
 		expect(connect).toBeInstanceOf(Function)
 	})
@@ -38,15 +37,16 @@ describe('connect', () => {
 		// get all of the point actions
 		const mapDispatch = ({ count }) => ({ ...count })
 
-		const mod = ({ store: { increment } }) => {
-			increment(2)
+		const mod = ({ store }) => {
+			const { dispatch } = store
+			dispatch.increment(2)
 		}
 
-		const merge = connect({ mapState, mapDispatch })(mod)
+		const module = connect({ mapState, mapDispatch })(mod)
 
-		expect(merge).toBeInstanceOf(Function)
+		expect(module).toBeInstanceOf(Function)
 
-		merge({})
+		module({})
 
 		expect(store.getState().count).toBe(2)
 	})
