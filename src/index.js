@@ -10,10 +10,7 @@ import { registerPlugin, renderInTheLoop } from '@spon/core'
  */
 function mapStateToRenderHelper(state, watch) {
 	return watch.length > 0
-		? watch.reduce((acc, key) => {
-			acc[key] = state[key]
-			return acc
-		  }, {})
+		? watch.reduce((acc, key) => ({ ...acc, [key]: state[key] }), {})
 		: state
 }
 
@@ -95,7 +92,7 @@ export default function connect(globalStore) {
 				 * @inner
 				 * @property {object} props the module argument object
 				 * @property {object} props.[...props] any other props
-				 * @property {object} props.render the store render function
+				 * @property {object} props.subscribe the store render function
 				 * @property {object} props.store the store methods and state props
 				 * @property {object} props.plugins any custom plugins
 				 *
@@ -104,7 +101,7 @@ export default function connect(globalStore) {
 				return module({
 					...props,
 					name,
-					render: (fn, deps = []) => {
+					subscribe: (fn, deps) => {
 						// add the current modules subscription function
 						// to the function cache used by the core app loader
 						registerPlugin(name)(globalStore.subscribe(render(fn, deps)))

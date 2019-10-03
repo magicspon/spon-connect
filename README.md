@@ -43,16 +43,16 @@ export default store
 import { connect } from '@/store'
 import { domEvents, withPlugins } from '@spon/plugins'
 
-function counter({ plugins: { addEvents }, store, render }) {
+function counter({ plugins: { addEvents }, store, subscribe }) {
 	const node = document.getElementById('value')
 
 	addEvents({
 		'click button': () => {
-			store.increment(1)
+			store.dispatch.increment(1)
 		}
 	})
 
-	render(
+	subscribe(
 		({ current }) => {
 			node.textContent = current.count
 		},
